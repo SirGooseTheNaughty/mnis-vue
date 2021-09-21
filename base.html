@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+</head>
+<body>
+    <div id="app">
+        <intro-page v-if="isIntro"></intro-page>
+        <test-page
+            v-if="isTest"
+            :question-number="questionNumber"
+            :question-block="questionBlock"
+            :total-steps="totalSteps"
+        ></test-page>
+        <results-page
+            v-if="isResults"
+            :results="results.mappedResults"
+        ></results-page>
+    </div>
+    
+    
+    <script src="scripts/fileSaver.js"></script>
+    <script src="scripts/html2canvas.min.js"></script>
+    <script src="./scripts/cookies.js"></script>
+    <!-- <script src="./scripts/utils.js"></script>
+    <script src="./scripts/functions.js"></script>
+    <script src="scripts/steps.js"></script>
+    <script src="./scripts/components.js"></script>
+    <script src="./scripts/app.js"></script> -->
+    
+    <script type="module" src="./script.js"></script>
+</body>
+</html>
