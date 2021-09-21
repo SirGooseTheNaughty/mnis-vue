@@ -1,4 +1,4 @@
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.min.js'
+import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js'
 import { appComp } from './modules/app.js';
 import { introPageComp, testPageComp, inputTextComp, inputRadioComp, inputCheckboxComp, resultsPageComp, resultComp } from './modules/components.js';
 

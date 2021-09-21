@@ -24,7 +24,7 @@ export const introPageComp = {
             </p>
             </div>
             <button class="forwards begin" v-on:click="startTest">начать тестирование</button>
-            <div class="welcomeText confidential">Информация строго <a href='${confLink}'>конфиденциальна</a> и не передается третьим лицам.</div>
+            <div class="welcomeText confidential">Информация строго <a href='${confLink}' target="_blank">конфиденциальна</a> и не передается третьим лицам.</div>
         </div>
     `,
     methods: {
@@ -46,7 +46,7 @@ export const testPageComp = {
         <div class="container">
             <div id="progress">
                 <p>{{ questionNumber + 1 }}/{{ totalSteps }} вопросов</p>
-                <div class="bar"><div style="width: 4%"></div></div>
+                <div class="bar"><div :style="{ width: progress }"></div></div>
             </div>
             <h2>{{ questionBlock.text }}</h2>
             <div class="questionBlock">
@@ -92,7 +92,8 @@ export const testPageComp = {
     computed: {
         isInput: function() { return this.questionBlock.type === 'input'; },
         isRadio: function() { return this.questionBlock.type === 'radio'; },
-        isCheckbox: function() { return this.questionBlock.type === 'checkbox'; }
+        isCheckbox: function() { return this.questionBlock.type === 'checkbox'; },
+        progress: function() { return `${100 * (this.questionNumber + 1) / this.totalSteps}%`; }
     },
     watch: {
         questionBlock: {
