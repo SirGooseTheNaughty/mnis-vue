@@ -1,4 +1,4 @@
-import { saveToFile } from './utils.js';
+import { saveToFile, unloadListener } from './utils.js';
 
 let confLink = '#';
 try {
@@ -211,6 +211,9 @@ export const resultsPageComp = {
         hasBadResults: function() {
             return this.results.find(res => res.severity === 2);
         }
+    },
+    mounted() {
+        window.removeEventListener('beforeunload', unloadListener);
     },
     methods: {
         saveToFile: function() {
