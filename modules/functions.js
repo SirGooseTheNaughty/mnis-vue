@@ -1,3 +1,5 @@
+import { vitaminsDict } from "./steps.js";
+
 export function calculateResults(context) {
     context.questions.forEach(question => {
         switch (question.type) {
