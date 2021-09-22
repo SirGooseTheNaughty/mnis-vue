@@ -111,6 +111,11 @@ export const testPageComp = {
                 }
             },
             deep: true
+        },
+        questionNumber: {
+            handler: function() {
+                $(window).scrollTop(0);
+            }
         }
     }
 };
