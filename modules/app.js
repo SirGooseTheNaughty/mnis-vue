@@ -2,6 +2,12 @@ import { questions, pointsByQs, pointsByAge, doses, vitaminsDict } from './steps
 import { calculateResults, addPointsByQs, addPointsByAge,  mapResults, sendEmail } from './functions.js';
 import { loadCookies, saveCookies, unloadListener, showResults } from './utils.js';
 
+let areEmailsEnabled = false;
+try {
+    areEmailsEnabled = enableEmails;
+} catch(e) {
+    console.log(e);
+}
 
 export const appComp = {
     el: '#app',
@@ -16,7 +22,10 @@ export const appComp = {
             questionNumber: null,
             results: {
                 data: {},
-                vitamins: {},
+                vitamins: Object.keys(vitaminsDict).reduce((obj, key) => {
+                    obj[key] = 0;
+                    return obj;
+                }, {}),
                 mappedResults: []
             },
             emailResult: null
@@ -112,7 +121,9 @@ export const appComp = {
             addPointsByAge(this);
             mapResults(this);
             saveCookies(this.results);
-            sendEmail(this);
+            if (areEmailsEnabled) {
+                sendEmail(this);
+            }
             showResults();
         }
     }

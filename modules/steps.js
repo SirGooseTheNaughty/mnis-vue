@@ -666,23 +666,53 @@ export const questions = [
         options: [
             {
                 text: 'Сухая кожа или экзема',
-                value: 2
+                value: 2,
+                addTo: [
+                    {
+                        id: 'O6',
+                        value: 2
+                    }
+                ]
             },
             {
                 text: 'Сухие волосы или перхоть',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'O6',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Чрезмерная жажда или потливость',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'O6',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Задержка жидкости в организме',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'O6',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Плохая память или проблемы с обучением',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'O6',
+                        value: 1
+                    }
+                ]
             }
         ]
     },
