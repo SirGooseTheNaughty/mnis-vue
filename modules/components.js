@@ -127,10 +127,19 @@ export const inputTextComp = {
             value: this.answer
         }
     },
-    template: '<input type="text" class="answer" :placeholder="placeholder" v-model="value" v-on:input="setAnswer">',
+    computed: {
+        type: function() {
+            return this.id === 'email' ? 'email' : 'text';
+        }
+    },
+    template: '<input :type="type" class="answer" :placeholder="placeholder" v-model="value" v-on:input="setAnswer">',
     methods: {
         setAnswer: function() {
-            this.$root.setAnswer('input', this.id, null, this.value);
+            if (this.$el.validity.valid) {
+                this.$root.setAnswer('input', this.id, null, this.value);
+            } else {
+                this.$root.setAnswer('input', this.id, null, null);
+            }
         },
     }
 };
@@ -184,7 +193,11 @@ export const inputCheckboxComp = {
         }
     },
     methods: {
-        setAnswer: function() {
+        setAnswer: function(e) {
+            if (!this.option.value && this.answer) {
+                e.preventDefault();
+                return;
+            }
             this.$root.setAnswer('checkbox', this.id, this.index);
         },
     }

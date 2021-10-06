@@ -104,10 +104,12 @@ export async function sendEmail(context) {
                 context.emailResult = 'success';
             } else {
                 context.emailResult = 'failure';
+                alert('Произошла ошибка при отправке результатов на почту. Пожалуйста, воспользуйтесь экспортом результатов ниже.');
             }
         })
         .catch(error => {
             console.log('error', error);
             context.emailResult = 'failure';
+            alert('Произошла ошибка при отправке результатов на почту. Пожалуйста, воспользуйтесь экспортом результатов ниже.');
         });
 }

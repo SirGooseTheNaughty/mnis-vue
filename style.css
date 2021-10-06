@@ -251,7 +251,7 @@ label {
 }
 
 @media only screen and (max-width: 1200px) {
-  #base {
+  #app {
     max-width: 940px;
     grid-template-columns: repeat(11, 60px 20px) 60px;
   }
@@ -262,7 +262,7 @@ label {
 }
 
 @media only screen and (max-width: 980px) {
-  #base {
+  #app {
     max-width: 620px;
     grid-template-columns: repeat(7, 60px 20px) 60px;
   }
@@ -283,7 +283,7 @@ label {
 }
 
 @media only screen and (max-width: 640px) {
-  #base {
+  #app {
     display: block;
   }
   .container {
@@ -293,7 +293,7 @@ label {
 }
 
 @media only screen and (max-width: 480px) {
-  #base {
+  #app {
     display: block;
     margin: 40px 0;
   }

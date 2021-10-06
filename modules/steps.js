@@ -50,7 +50,25 @@ export const questions = [
             },
             {
                 text: 'Частые простуды или инфекции',
-                value: 2
+                value: 2,
+                addTo: [
+                    {
+                        id: 'D',
+                        value: 1
+                    },
+                    {
+                        id: 'C',
+                        value: 2
+                    },
+                    {
+                        id: 'Zn',
+                        value: 2
+                    },
+                    {
+                        id: 'Se',
+                        value: 2
+                    }
+                ]
             },
             {
                 text: 'Сухая, шелушащаяся кожа',
@@ -62,7 +80,13 @@ export const questions = [
             },
             {
                 text: 'Диарея или мягкие (водянистые) испражнения',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B3',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Молочница или цистит',
@@ -74,7 +98,25 @@ export const questions = [
             },
             {
                 text: 'Плохое заживление ран',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'D',
+                        value: 1
+                    },
+                    {
+                        id: 'E',
+                        value: 1
+                    },
+                    {
+                        id: 'C',
+                        value: 1
+                    },
+                    {
+                        id: 'Cr',
+                        value: 1
+                    }
+                ]
             }
         ]
     },
@@ -108,16 +150,26 @@ export const questions = [
                 value: 2
             },
             {
-                text: 'Частые заболевания',
-                value: 1
-            },
-            {
-                text: 'Депрессия',
-                value: 1
-            },
-            {
-                text: 'Длительно незаживающие раны',
-                value: 1
+                text: 'Депрессивное состояние',
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B3',
+                        value: 1
+                    },
+                    {
+                        id: 'B6',
+                        value: 1
+                    },
+                    {
+                        id: 'B9',
+                        value: 1
+                    },
+                    {
+                        id: 'B7',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Усталость и утомляемость',
@@ -147,20 +199,6 @@ export const questions = [
                 ]
             },
             {
-                text: 'Медленное заживление ран',
-                value: 1,
-                addTo: [
-                    {
-                        id: 'C',
-                        value: 1
-                    },
-                    {
-                        id: 'Cr',
-                        value: 1
-                    }
-                ]
-            },
-            {
                 text: 'Варикозное расширение вен',
                 value: 1
             },
@@ -183,10 +221,6 @@ export const questions = [
         type: 'checkbox',
         id: 'C',
         options: [
-            {
-                text: 'Частые простуды',
-                value: 2
-            },
             {
                 text: 'Недостаток энергии или необъяснимая усталость',
                 value: 1,
@@ -240,12 +274,18 @@ export const questions = [
                 value: 1
             },
             {
-                text: 'Медленно заживающие раны',
-                value: 1
-            },
-            {
-                text: 'Ожирение',
-                value: 1
+                text: 'Избыточный вес',
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B6',
+                        value: 1
+                    },
+                    {
+                        id: 'Zn',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Пурпурные или красные точки на коже (гемангиомы)',
@@ -282,7 +322,17 @@ export const questions = [
             },
             {
                 text: 'Раздражительность ',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B3',
+                        value: 1
+                    },
+                    {
+                        id: 'B12',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Плохая концентрация',
@@ -345,7 +395,25 @@ export const questions = [
             },
             {
                 text: 'Экзема или дерматит',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B12',
+                        value: 1
+                    },
+                    {
+                        id: 'B9',
+                        value: 1
+                    },
+                    {
+                        id: 'O3',
+                        value: 2
+                    },
+                    {
+                        id: 'O6',
+                        value: 2
+                    }
+                ]
             },
             {
                 text: 'Утолщение и уплотнение ногтей',
@@ -375,28 +443,54 @@ export const questions = [
         id: 'B3',
         options: [
             {
-                text: 'Диарея',
-                value: 1
-            },
-            {
                 text: 'Бессонница',
                 value: 1
             },
             {
                 text: 'Головные боли или мигрени',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B9',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Тревога или напряжение',
-                value: 1
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B5',
+                        value: 1
+                    },
+                    {
+                        id: 'B12',
+                        value: 1
+                    },
+                    {
+                        id: 'B9',
+                        value: 1
+                    }
+                ]
             },
             {
-                text: 'Депрессия',
-                value: 1
-            },
-            {
-                text: 'Раздражительность',
-                value: 1
+                text: 'Недостаток энергии',
+                value: 1,
+                addTo: [
+                    {
+                        id: 'B5',
+                        value: 1
+                    },
+                    {
+                        id: 'B6',
+                        value: 2
+                    },
+                    {
+                        id: 'B9',
+                        value: 1
+                    }
+                ]
             }
         ]
     },
@@ -436,10 +530,6 @@ export const questions = [
                 ]
             },
             {
-                text: 'Тревога или напряжение ',
-                value: 1
-            },
-            {
                 text: 'Зубной скрежет. Бруксизм',
                 value: 1
             },
@@ -467,10 +557,6 @@ export const questions = [
                 value: 1
             },
             {
-                text: 'Депрессия или нервозность',
-                value: 1
-            },
-            {
                 text: 'Изменение настроения',
                 value: 1
             },
@@ -481,10 +567,6 @@ export const questions = [
             {
                 text: 'Отсутствие энергии ',
                 value: 2
-            },
-            {
-                text: 'Ожирение',
-                value: 1
             },
             {
                 text: 'Высокий уровень гомоцистеина',
@@ -507,14 +589,6 @@ export const questions = [
             },
             {
                 text: 'Чрезмерная чувствительность рта к теплу или холоду',
-                value: 1
-            },
-            {
-                text: 'Раздражительность',
-                value: 1
-            },
-            {
-                text: 'Тревога или напряжение',
                 value: 1
             },
             {
@@ -549,19 +623,7 @@ export const questions = [
                 value: 1
             },
             {
-                text: 'Тревога или напряжение',
-                value: 1
-            },
-            {
-                text: 'Депрессивное состояние',
-                value: 1
-            },
-            {
                 text: 'Плохой аппетит',
-                value: 1
-            },
-            {
-                text: 'Головные боли',
                 value: 1
             }
         ]
@@ -594,10 +656,6 @@ export const questions = [
             {
                 text: 'Нейросенсорная потеря слуха',
                 value: 2
-            },
-            {
-                text: 'Депрессия, беспокойство',
-                value: 1
             }
         ]
     },
@@ -634,8 +692,18 @@ export const questions = [
         id: 'Ca',
         options: [
             {
-                text: 'Мышечные спазмы, судороги. Возникновение ночных судорог в икрах или в утреннее время',
-                value: 2
+                text: 'Мышечные спазмы, судороги',
+                value: 2,
+                addTo: [
+                    {
+                        id: 'Mg',
+                        value: 2
+                    },
+                    {
+                        id: 'Se',
+                        value: 1
+                    }
+                ]
             },
             {
                 text: 'Нарушение сна',
@@ -672,10 +740,6 @@ export const questions = [
         type: 'checkbox',
         id: 'Mg',
         options: [
-            {
-                text: 'Мышечные спазмы или судороги',
-                value: 2
-            },
             {
                 text: 'Мышечная слабость или быстрая утомляемость',
                 value: 1
@@ -775,10 +839,6 @@ export const questions = [
                 value: 2
             },
             {
-                text: 'Ожирение',
-                value: 1
-            },
-            {
                 text: 'Истончение и выпадение волос',
                 value: 1
             }
@@ -849,7 +909,7 @@ export const questions = [
                 value: 2
             },
             {
-                text: 'Мышечная слабость , боль, спазмы',
+                text: 'Мышечная слабость, боль, спазмы',
                 value: 1
             },
             {
@@ -885,10 +945,6 @@ export const questions = [
             },
             {
                 text: 'Снижение выносливости и потеря мышечной массы',
-                value: 1
-            },
-            {
-                text: 'Медленное заживление ран',
                 value: 1
             },
             {
