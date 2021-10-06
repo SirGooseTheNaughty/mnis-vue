@@ -1110,7 +1110,8 @@ export const questions = [
     {
         text: 'Укажите почту, на которую прислать результат тестирования',
         type: 'input',
-        id: 'email'
+        id: 'email',
+        placeholder: 'example@gmail.com'
     }
 ];
 export const pointsByQs = {
