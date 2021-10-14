@@ -1,5 +1,5 @@
 import { questions, pointsByQs, pointsByAge, doses, vitaminsDict } from './steps.js';
-import { calculateResults, addPointsByQs, addPointsByAge,  mapResults, sendEmail } from './functions.js';
+import { calculateResults, addPointsByQs, addPointsByAge,  mapResults, sendEmail, fetchQuestions, preformResults, fetchResults } from './functions.js';
 import { loadCookies, saveCookies, unloadListener, showResults } from './utils.js';
 
 let areEmailsEnabled = false;
@@ -13,7 +13,7 @@ export const appComp = {
     el: '#app',
     data() {
         return {
-            questions: [...questions],
+            questions: [],
             pointsByQs: pointsByQs,
             pointsByAge: pointsByAge,
             doses: doses,
@@ -31,41 +31,48 @@ export const appComp = {
             emailResult: null
         }
     },
-    mounted() {
-        window.addEventListener('beforeunload', unloadListener);
-        this.questions.forEach((q, i) => {
-            switch(q.type) {
-                case 'input':
-                    this.$set(this.questions[i], 'res', '');
-                    break;
-                case 'radio':
-                    this.$set(this.questions[i], 'res', null);
-                    break;
-                case 'checkbox':
-                    this.$set(this.questions[i].options, [q.options.length], {
-                        text: 'Ни один из перечисленных вариантов',
-                        value: 0
-                    });
-                    q.options.forEach((o, j) => {
-                        this.$set(this.questions[i].options[j], 'res', j === q.options.length - 1);
-                    });
-                    break;
-            }
-        });
+    async mounted() {
         loadCookies(this);
         if (this.results.mappedResults.length) {
             window.removeEventListener('beforeunload', unloadListener);
+        } else {
+            window.addEventListener('beforeunload', unloadListener);
+            const fetchedQuestions = await fetchQuestions(this);
+            console.log(fetchedQuestions);
+            this.questions = fetchedQuestions;
+            this.questions.forEach((q, i) => {
+                switch(q.type) {
+                    case 'input':
+                        this.$set(this.questions[i], 'res', '');
+                        break;
+                    case 'radio':
+                        this.$set(this.questions[i], 'res', null);
+                        break;
+                    case 'checkbox':
+                        this.$set(this.questions[i].options, [q.options.length], {
+                            text: 'Ни один из перечисленных вариантов',
+                            value: 0
+                        });
+                        q.options.forEach((o, j) => {
+                            this.$set(this.questions[i].options[j], 'res', j === q.options.length - 1);
+                        });
+                        break;
+                }
+            });
         }
     },
     computed: {
         isIntro: function() {
-            return this.phase === 'intro'
+            return this.phase === 'intro';
         },
         isTest: function() {
-            return this.phase === 'test'
+            return this.phase === 'test' && this.questions && this.questions.length;
         },
         isResults: function() {
-            return this.phase === 'results'
+            return this.phase === 'results' && this.results && this.results.mappedResults && this.results.mappedResults.length;
+        },
+        isLoading: function() {
+            return !this.isIntro && !this.isTest && !this.isResults;
         },
         questionBlock: function() {
             return this.questions[this.questionNumber];
@@ -115,16 +122,21 @@ export const appComp = {
                     break;
             }
         },
-        calculateResults: function() {
-            calculateResults(this);
-            addPointsByQs(this);
-            addPointsByAge(this);
-            mapResults(this);
+        calculateResults: async function() {
+            const answers = preformResults(this);
+            this.results.mappedResults = await fetchResults(answers);
             saveCookies(this.results);
-            if (areEmailsEnabled) {
-                sendEmail(this);
-            }
             showResults();
+            
+            // calculateResults(this);
+            // addPointsByQs(this);
+            // addPointsByAge(this);
+            // mapResults(this);
+            // saveCookies(this.results);
+            // if (areEmailsEnabled) {
+            //     sendEmail(this);
+            // }
+            // showResults();
         }
     }
 };

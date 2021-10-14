@@ -113,3 +113,48 @@ export async function sendEmail(context) {
             alert('Произошла ошибка при отправке результатов на почту. Пожалуйста, воспользуйтесь экспортом результатов ниже.');
         });
 }
+
+export async function fetchQuestions() {
+    let res;
+    await fetch("https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0", {
+        method: 'GET',
+        redirect: 'follow'
+    })
+        .then(response => response.json())
+        .then(result => res = result)
+        .catch(error => res = error);
+    return res;
+}
+
+export function preformResults(context) {
+    const answers = {};
+    context.questions.forEach(question => {
+        switch (question.type) {
+            case 'input':
+            case 'radio':
+                answers[question.id] = question.res;
+                break;
+            case 'checkbox':
+                answers[question.id] = [];
+                question.options.forEach(option => {
+                    answers[question.id].push(option.res);
+                });
+                break;
+        }
+    });
+    return answers;
+}
+
+export async function fetchResults(answers) {
+    return await fetch("https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0", {
+        method: 'POST',
+        body: JSON.stringify(answers),
+        redirect: 'follow'
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        return result;
+    })
+    .catch(error => console.log('error', error));
+}

@@ -21,6 +21,7 @@
             v-if="isResults"
             :results="results.mappedResults"
         ></results-page>
+        <loader v-if="isLoading"></loader>
     </div>
     
     
@@ -32,6 +33,8 @@
     <script src="scripts/steps.js"></script>
     <script src="./scripts/components.js"></script>
     <script src="./scripts/app.js"></script> -->
+
+    <script>let globalApp;</script>
     
     <script type="module" src="./script.js"></script>
 </body>
