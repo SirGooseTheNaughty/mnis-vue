@@ -60,6 +60,7 @@ export const appComp = {
         loadCookies(this);
         if (this.results.mappedResults.length) {
             window.removeEventListener('beforeunload', unloadListener);
+            this.showResults();
         } else {
             const fetchedQuestions = await fetchQuestions(this);
             if (fetchedQuestions.errorCode) {
