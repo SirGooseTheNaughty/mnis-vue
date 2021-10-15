@@ -1,4 +1,4 @@
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js'
+import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.min.js'
 import { appComp } from './modules/app.js';
 import { introPageComp, testPageComp, inputTextComp, inputRadioComp, inputCheckboxComp, resultsPageComp, resultComp, loaderComp, errorComp } from './modules/components.js';
 
@@ -13,4 +13,8 @@ Vue.component('loader', loaderComp);
 Vue.component('error', errorComp);
 
 const app = new Vue(appComp);
-globalApp = app;
+try {
+    if (globalApp) {
+        globalApp = app;
+    }
+} catch (e) {};
