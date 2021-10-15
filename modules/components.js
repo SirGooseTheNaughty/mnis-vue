@@ -8,6 +8,7 @@ try {
 }
 
 export const introPageComp = {
+    props: ['enabled'],
     template: `
         <div class="container firstPage">
             <h1>Начни свой путь к хорошему самочувствию</h1>
@@ -23,14 +24,16 @@ export const introPageComp = {
                 есть значительные симптомы, вам следует немедленно обратиться к врачу.
             </p>
             </div>
-            <button class="forwards begin" v-on:click="startTest">начать тестирование</button>
+            <button class="forwards begin" v-on:click="startTest" :class="{ disabled: !enabled }">начать тестирование</button>
             <div class="welcomeText confidential">Информация строго <a href='${confLink}' target="_blank">конфиденциальна</a> и не передается третьим лицам.</div>
         </div>
     `,
     methods: {
         startTest: function() {
-            this.$root.setQuestion(0);
-            this.$root.setPhase('test');
+            if (this.enabled) {
+                this.$root.setQuestion(0);
+                this.$root.setPhase('test');
+            }
         },
     }
 };
@@ -130,12 +133,18 @@ export const inputTextComp = {
     computed: {
         type: function() {
             return this.id === 'email' ? 'email' : 'text';
+        },
+        isValid: function() {
+            if (this.id === 'email') {
+                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.value);
+            }
+            return this.$el.validity.valid
         }
     },
     template: '<input :type="type" class="answer" :placeholder="placeholder" v-model="value" v-on:input="setAnswer">',
     methods: {
         setAnswer: function() {
-            if (this.$el.validity.valid) {
+            if (this.isValid) {
                 this.$root.setAnswer('input', this.id, null, this.value);
             } else {
                 this.$root.setAnswer('input', this.id, null, null);
@@ -312,5 +321,47 @@ export const loaderComp = {
             <circle cx="30.25" cy="28.25" r="1.25" fill="#97A08B"/>
         </svg>
     </div>
+    `
+};
+
+export const errorComp = {
+    props: ['params', 'title', 'text', 'option-back', 'option-forwards'],
+    computed: {
+        icon: function() {
+            if (this.params.status === 'success') {
+                return (`
+                    <circle cx="25" cy="25" r="25" fill="#97A08B"/>
+                    <path d="M13 25.5L21.5 33" stroke="#FDFDFD" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M21.5 33L37.5 17" stroke="#FDFDFD" stroke-width="5" stroke-linecap="round"/>
+                `);
+            }
+            return (`
+                <circle cx="25" cy="25" r="25" fill="#F4F4F4"/>
+                <line x1="16.1213" y1="17" x2="34" y2="34.8787" stroke="#FF0000" stroke-width="3" stroke-linecap="round"/>
+                <line x1="16" y1="34.8787" x2="33.8787" y2="17" stroke="#FF0000" stroke-width="3" stroke-linecap="round"/>
+            `);
+        }
+    },
+    template: `
+        <div class="container errorPage">
+            <div class="errorPage-container">
+                <svg
+                    class="error-mark"
+                    width="50"
+                    height="50"
+                    viewBox="0 0 50 50"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    v-html="icon"
+                ></svg>
+                    
+                <div class="error-title">{{ params.title }}</div>
+                <div class="error-text">{{ params.text }}</div>
+                <div class="buttonBlock">
+                    <button v-if="optionBack" class="backwards" v-on:click="optionBack.handler">{{ params.optionBack.text }}</button>
+                    <button v-if="optionForwards" class="forwards" v-on:click="optionForwards.handler">{{ params.optionForwards.text }}</button>
+                </div>
+            </div>
+        </div>
     `
 };

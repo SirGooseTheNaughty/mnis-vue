@@ -1,34 +1,59 @@
-import { questions, pointsByQs, pointsByAge, doses, vitaminsDict } from './steps.js';
-import { calculateResults, addPointsByQs, addPointsByAge,  mapResults, sendEmail, fetchQuestions, preformResults, fetchResults } from './functions.js';
+import { fetchQuestions, preformResults, fetchResults } from './functions.js';
 import { loadCookies, saveCookies, unloadListener, showResults } from './utils.js';
 
-let areEmailsEnabled = false;
-try {
-    areEmailsEnabled = enableEmails;
-} catch(e) {
-    console.log(e);
-}
+const vitaminsDict = {
+    A: 'Витамин А',
+    D: 'Витамин D',
+    E: 'Витамин Е',
+    C: 'Витамин С',
+    B1: 'Витамин B1',
+    B2: 'Витамин В2',
+    B3: 'Витамин В3',
+    B5: 'Витамин В5',
+    B6: 'Витамин В6',
+    B12: 'Витамин В12',
+    B9: 'Витамин В9',
+    B7: 'Витамин В7',
+    O3: 'ОМЕГА- 3',
+    O6: 'ОМЕГА- 6',
+    Ca: 'Кальций',
+    Mg: 'Магний',
+    Fe: 'Железо',
+    Zn: 'Цинк',
+    Mn: 'Марганец',
+    Se: 'Селен',
+    Cr: 'Хром',
+};
 
 export const appComp = {
     el: '#app',
     data() {
         return {
             questions: [],
-            pointsByQs: pointsByQs,
-            pointsByAge: pointsByAge,
-            doses: doses,
-            vitaminsDict: vitaminsDict,
-            phase: 'intro',     // intro / test / results
+            phase: 'intro',     // intro / test / results / fetching / error
             questionNumber: null,
             results: {
                 data: {},
+                mappedResults: [],
                 vitamins: Object.keys(vitaminsDict).reduce((obj, key) => {
                     obj[key] = 0;
                     return obj;
-                }, {}),
-                mappedResults: []
+                }, {})
             },
-            emailResult: null
+            emailResult: null,
+            errorParams: {
+                status: 'error',
+                title: '',
+                text: '',
+                optionBack: {
+                    text: '',
+                    handler: () => {}
+                },
+                optionForwards: {
+                    text: '',
+                    handler: () => {}
+                }
+            }
         }
     },
     async mounted() {
@@ -36,29 +61,43 @@ export const appComp = {
         if (this.results.mappedResults.length) {
             window.removeEventListener('beforeunload', unloadListener);
         } else {
-            window.addEventListener('beforeunload', unloadListener);
             const fetchedQuestions = await fetchQuestions(this);
-            console.log(fetchedQuestions);
-            this.questions = fetchedQuestions;
-            this.questions.forEach((q, i) => {
-                switch(q.type) {
-                    case 'input':
-                        this.$set(this.questions[i], 'res', '');
-                        break;
-                    case 'radio':
-                        this.$set(this.questions[i], 'res', null);
-                        break;
-                    case 'checkbox':
-                        this.$set(this.questions[i].options, [q.options.length], {
-                            text: 'Ни один из перечисленных вариантов',
-                            value: 0
-                        });
-                        q.options.forEach((o, j) => {
-                            this.$set(this.questions[i].options[j], 'res', j === q.options.length - 1);
-                        });
-                        break;
-                }
-            });
+            if (fetchedQuestions.errorCode) {
+                this.setErrorParams({
+                    status: 'error',
+                    title: 'Что-то пошло не так: не удалось загрузить тест.',
+                    text: 'Попробуйте еще раз или обратитесь за помощью.',
+                    optionBack: {
+                        text: 'Перезагрузить тест',
+                        handler: () => location.reload()
+                    },
+                    optionForwards: null
+                });
+                this.setPhase('error');
+            } else {
+                window.addEventListener('beforeunload', unloadListener);
+                console.log(fetchedQuestions);
+                this.questions = fetchedQuestions;
+                this.questions.forEach((q, i) => {
+                    switch(q.type) {
+                        case 'input':
+                            this.$set(this.questions[i], 'res', '');
+                            break;
+                        case 'radio':
+                            this.$set(this.questions[i], 'res', null);
+                            break;
+                        case 'checkbox':
+                            this.$set(this.questions[i].options, [q.options.length], {
+                                text: 'Ни один из перечисленных вариантов',
+                                value: 0
+                            });
+                            q.options.forEach((o, j) => {
+                                this.$set(this.questions[i].options[j], 'res', j === q.options.length - 1);
+                            });
+                            break;
+                    }
+                });
+            }
         }
     },
     computed: {
@@ -72,13 +111,19 @@ export const appComp = {
             return this.phase === 'results' && this.results && this.results.mappedResults && this.results.mappedResults.length;
         },
         isLoading: function() {
-            return !this.isIntro && !this.isTest && !this.isResults;
+            return this.phase === 'fetching' || !(this.isIntro || this.isTest || this.isResults || this.isError);
+        },
+        isError: function() {
+            return this.phase === 'error';
         },
         questionBlock: function() {
             return this.questions[this.questionNumber];
         },
         totalSteps: function() {
             return this.questions.length;
+        },
+        startEnabled: function() {
+            return this.questions && this.questions.length;
         }
     },
     methods: {
@@ -124,19 +169,74 @@ export const appComp = {
         },
         calculateResults: async function() {
             const answers = preformResults(this);
-            this.results.mappedResults = await fetchResults(answers);
-            saveCookies(this.results);
-            showResults();
-            
-            // calculateResults(this);
-            // addPointsByQs(this);
-            // addPointsByAge(this);
-            // mapResults(this);
-            // saveCookies(this.results);
-            // if (areEmailsEnabled) {
-            //     sendEmail(this);
-            // }
-            // showResults();
+            this.setPhase('fetching');
+            const calculationResults = await fetchResults(answers);
+            if (calculationResults.errorCode) {
+                this.setErrorParams({
+                    status: 'error',
+                    title: 'Что-то пошло не так: не удалось загрузить результаты',
+                    text: 'Попробуйте отправить результаты еще раз или пройти тест заново.',
+                    optionBack: {
+                        text: 'Начать заново',
+                        handler: () => {
+                            deleteCookie('mnic');
+                            this.setPhase('intro');
+                        }
+                    },
+                    optionForwards: {
+                        text: 'Отправить результаты',
+                        handler: () => this.calculateResults()
+                    },
+                });
+                this.setPhase('error');
+            } else {
+                this.results.mappedResults = calculationResults.body;
+                this.emailResult = calculationResults.emailRes;
+                if (this.emailResult.statusCode !== 200) {
+                    this.setErrorParams({
+                        status: 'error',
+                        title: 'Что-то пошло не так. Мы не смогли отправить результаты на указанную почту',
+                        text: 'Попробуйте ввести почту еще раз или скачайте результаты тестирования с сайта к себе на устройство.',
+                        optionBack: {
+                            text: 'ввести новую почту',
+                            handler: () => {
+                                this.setQuestion(this.questions.length - 1);
+                                this.setPhase('test');
+                            }
+                        },
+                        optionForwards: {
+                            text: 'перейти к результатам',
+                            handler: () => this.setPhase('results')
+                        },
+                    });
+                    this.setPhase('error');
+                } else {
+                    this.setErrorParams({
+                        status: 'success',
+                        title: 'Результаты успешно направлены на вашу почту',
+                        text: this.questions.find(q => q.id === 'email').res || '',
+                        optionBack: {
+                            text: 'ввести новую почту',
+                            handler: () => {
+                                this.setQuestion(this.questions.length - 1);
+                                this.setPhase('test');
+                            }
+                        },
+                        optionForwards: {
+                            text: 'перейти к результатам',
+                            handler: () => {
+                                this.setPhase('results');
+                                showResults();
+                            }
+                        },
+                    });
+                    this.setPhase('error');
+                }
+                saveCookies(this.results);
+            }
+        },
+        setErrorParams(params) {
+            this.errorParams = params;
         }
     }
 };

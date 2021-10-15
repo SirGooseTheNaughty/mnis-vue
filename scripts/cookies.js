@@ -30,3 +30,7 @@ function deleteCookie(name) {
         'max-age': -1
     })
 }
+
+function deleteMnic() {
+    deleteCookie('mnic');
+}

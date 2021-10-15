@@ -6,11 +6,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 </head>
 <body>
     <div id="app">
-        <intro-page v-if="isIntro"></intro-page>
+        <intro-page v-if="isIntro" :enabled="startEnabled"></intro-page>
         <test-page
             v-if="isTest"
             :question-number="questionNumber"
@@ -22,17 +21,20 @@
             :results="results.mappedResults"
         ></results-page>
         <loader v-if="isLoading"></loader>
+        <error
+            v-if="isError"
+            :params="errorParams"
+            :title="errorParams.title"
+            :text="errorParams.text"
+            :option-back="errorParams.optionBack"
+            :option-forwards="errorParams.optionForwards"
+        ></error>
     </div>
     
     
     <script src="scripts/fileSaver.js"></script>
     <script src="scripts/html2canvas.min.js"></script>
     <script src="./scripts/cookies.js"></script>
-    <!-- <script src="./scripts/utils.js"></script>
-    <script src="./scripts/functions.js"></script>
-    <script src="scripts/steps.js"></script>
-    <script src="./scripts/components.js"></script>
-    <script src="./scripts/app.js"></script> -->
 
     <script>let globalApp;</script>
     
