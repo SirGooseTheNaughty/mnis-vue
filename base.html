@@ -15,6 +15,7 @@
             :question-number="questionNumber"
             :question-block="questionBlock"
             :total-steps="totalSteps"
+            :can-go-back="!isResettingEmail"
         ></test-page>
         <results-page
             v-if="isResults"

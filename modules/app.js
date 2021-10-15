@@ -53,14 +53,15 @@ export const appComp = {
                     text: '',
                     handler: () => {}
                 }
-            }
+            },
+            isResettingEmail: false
         }
     },
     async mounted() {
         loadCookies(this);
         if (this.results.mappedResults.length) {
             window.removeEventListener('beforeunload', unloadListener);
-            this.showResults();
+            showResults();
         } else {
             const fetchedQuestions = await fetchQuestions(this);
             if (fetchedQuestions.errorCode) {
@@ -201,6 +202,7 @@ export const appComp = {
                         optionBack: {
                             text: 'ввести новую почту',
                             handler: () => {
+                                this.setIsResettingEmail(true);
                                 this.setQuestion(this.questions.length - 1);
                                 this.setPhase('test');
                             }
@@ -220,6 +222,7 @@ export const appComp = {
                             text: 'ввести новую почту',
                             handler: () => {
                                 this.setQuestion(this.questions.length - 1);
+                                this.setIsResettingEmail(true);
                                 this.setPhase('test');
                             }
                         },
@@ -238,6 +241,9 @@ export const appComp = {
         },
         setErrorParams(params) {
             this.errorParams = params;
+        },
+        setIsResettingEmail(isResettingEmail) {
+            this.isResettingEmail = isResettingEmail;
         }
     }
 };

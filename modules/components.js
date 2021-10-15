@@ -39,7 +39,7 @@ export const introPageComp = {
 };
 
 export const testPageComp = {
-    props: ['question-number', 'question-block', 'total-steps'],
+    props: ['question-number', 'question-block', 'total-steps', 'can-go-back'],
     data() {
         return {
             isInputValid: false
@@ -77,7 +77,7 @@ export const testPageComp = {
                 ></input-checkbox>
             </div>
             <div class="buttonBlock">
-                <button v-on:click="prevQuestion" class="backwards">назад</button>
+                <button v-if="canGoBack" v-on:click="prevQuestion" class="backwards">назад</button>
                 <button v-on:click="nextQuestion" class="forwards" :class="{ disabled: !isInputValid }">далее</button>
             </div>
         </div>
