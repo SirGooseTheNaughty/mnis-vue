@@ -1,4 +1,4 @@
-import { cloudFunctionURL } from './secrets.js';
+const cloudFunctionURL = 'https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0';
 
 export async function fetchQuestions(context) {
     let res;

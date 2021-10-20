@@ -1,1 +1,0 @@
-export const cloudFunctionURL = 'https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0';
