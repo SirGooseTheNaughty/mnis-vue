@@ -1,29 +1,7 @@
 import { fetchQuestions, preformResults, fetchResults } from './functions.js';
 import { loadCookies, saveCookies, unloadListener, showResults } from './utils.js';
 
-const vitaminsDict = {
-    A: 'Витамин А',
-    D: 'Витамин D',
-    E: 'Витамин Е',
-    C: 'Витамин С',
-    B1: 'Витамин B1',
-    B2: 'Витамин В2',
-    B3: 'Витамин В3',
-    B5: 'Витамин В5',
-    B6: 'Витамин В6',
-    B12: 'Витамин В12',
-    B9: 'Витамин В9',
-    B7: 'Витамин В7',
-    O3: 'ОМЕГА- 3',
-    O6: 'ОМЕГА- 6',
-    Ca: 'Кальций',
-    Mg: 'Магний',
-    Fe: 'Железо',
-    Zn: 'Цинк',
-    Mn: 'Марганец',
-    Se: 'Селен',
-    Cr: 'Хром',
-};
+const vitaminsKeys = ['A', 'D', 'E', 'C', 'B1', 'B2', 'B3', 'B5', 'B6', 'B12', 'B9', 'B7', 'O3', 'O6', 'Cz', 'Mg', 'Fe', 'Zn', 'Mn', 'Se', 'Cr'];
 
 export const appComp = {
     el: '#app',
@@ -35,7 +13,7 @@ export const appComp = {
             results: {
                 data: {},
                 mappedResults: [],
-                vitamins: Object.keys(vitaminsDict).reduce((obj, key) => {
+                vitamins: vitaminsKeys.reduce((obj, key) => {
                     obj[key] = 0;
                     return obj;
                 }, {})
@@ -177,7 +155,7 @@ export const appComp = {
                 this.setErrorParams({
                     status: 'error',
                     title: 'Что-то пошло не так: не удалось загрузить результаты',
-                    text: 'Попробуйте отправить результаты еще раз или пройти тест заново.',
+                    text: 'Попробуйте отправить запрос еще раз или пройти тест заново.',
                     optionBack: {
                         text: 'Начать заново',
                         handler: () => {
@@ -186,7 +164,7 @@ export const appComp = {
                         }
                     },
                     optionForwards: {
-                        text: 'Отправить результаты',
+                        text: 'Отправить запрос',
                         handler: () => this.calculateResults()
                     },
                 });
