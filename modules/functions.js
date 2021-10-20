@@ -1,6 +1,8 @@
+import { cloudFunctionURL } from './secrets.js';
+
 export async function fetchQuestions(context) {
     let res;
-    await fetch("https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0", {
+    await fetch(cloudFunctionURL, {
         method: 'GET',
         redirect: 'follow'
     })
@@ -40,7 +42,7 @@ export function preformResults(context) {
 }
 
 export async function fetchResults(answers) {
-    return await fetch("https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0", {
+    return await fetch(cloudFunctionURL, {
         method: 'POST',
         body: JSON.stringify(answers),
         redirect: 'follow'
