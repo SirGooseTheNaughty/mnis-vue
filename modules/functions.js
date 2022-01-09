@@ -1,4 +1,4 @@
-const cloudFunctionURL = 'https://functions.yandexcloud.net/d4e67srogrpsvi8csvc0';
+const cloudFunctionURL = 'https://functions.yandexcloud.net/d4eq247t8ipaaamd8dmd';
 
 export async function fetchQuestions(context) {
     let res;
